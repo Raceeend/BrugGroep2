@@ -7,4 +7,5 @@ spark
   .withColumnRenamed("Sensor naam", "Sensor_naam")
   .withColumnRenamed("Primaire lijn", "Primaire_lijn")
   .write
+  .mode("overwrite")
   .saveAsTable("biobridge_bronze.strain")
