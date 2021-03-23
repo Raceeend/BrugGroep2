@@ -1,5 +1,5 @@
 // Databricks notebook source
-import org.apache.spark.sql.functions.{to_timestamp, translate}
+import org.apache.spark.sql.functions.{to_date, to_timestamp, translate}
 
 spark.table("biobridge_bronze.strain")
   .select(
@@ -10,8 +10,10 @@ spark.table("biobridge_bronze.strain")
     $"Brugdeel",
     translate($"Kopafstand", ",", ".").cast("Double").as("Kopafstand"),
     $"Element",
-    $"Primaire_lijn"
+    $"Primaire_lijn",
+    to_date($"Datum-tijd").as("datum")
   )
   .write
   .mode("overwrite")
+  .partitionBy("datum")
   .saveAsTable("biobridge_silver.strain")

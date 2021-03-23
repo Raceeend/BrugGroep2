@@ -1,5 +1,5 @@
 // Databricks notebook source
-import org.apache.spark.sql.functions.{to_timestamp, translate}
+import org.apache.spark.sql.functions.{to_date, to_timestamp, translate}
 
 spark.table("biobridge_bronze.meteo")
   .where($"Datum-tijd".isNotNull) // Filter extra header
@@ -11,8 +11,10 @@ spark.table("biobridge_bronze.meteo")
     translate($"Luchtvochtigheid", ",", ".").cast("Double").as("Luchtvochtigheid"),
     translate($"Luchtdruk", ",", ".").cast("Double").as("Luchtdruk"),
     translate($"Neerslag", ",", ".").cast("Double").as("Neerslag"),
-    translate($"Zonneschijn", ",", ".").cast("Double").as("Zonneschijn")
+    translate($"Zonneschijn", ",", ".").cast("Double").as("Zonneschijn"),
+    to_date($"Datum-tijd").as("datum")
   )
   .write
   .mode("overwrite")
+  .partitionBy("datum")
   .saveAsTable("biobridge_silver.meteo")
