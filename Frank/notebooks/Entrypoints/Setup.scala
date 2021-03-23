@@ -6,3 +6,8 @@
 
 // MAGIC %sql
 // MAGIC create database if not exists biobridge_silver location "/mnt/biobridge/silver.db"
+
+// COMMAND ----------
+
+// MAGIC %sql
+// MAGIC create database if not exists biobridge_gold location "/mnt/biobridge/gold.db"
