@@ -13,6 +13,7 @@ spark.table("biobridge_bronze.strain")
     $"Primaire_lijn",
     to_date($"Datum-tijd").as("datum")
   )
+  .where($"datum" >= "2020-05-01")
   .write
   .mode("overwrite")
   .partitionBy("datum")

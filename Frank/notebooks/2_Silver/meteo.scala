@@ -4,7 +4,7 @@ import org.apache.spark.sql.functions.{to_date, to_timestamp, translate}
 spark.table("biobridge_bronze.meteo")
   .where($"Datum-tijd".isNotNull) // Filter extra header
   .select(
-    to_timestamp($"Datum-tijd").as("Datum-tijd"),
+    to_timestamp($"Datum-tijd").as("Datum_tijd"),
     translate($"Temp", ",", ".").cast("Double").as("Temp"),
     translate($"Windsnelheid", ",", ".").cast("Double").as("Windsnelheid"),
     translate($"Windrichting", ",", ".").cast("Double").as("Windrichting"),
@@ -14,6 +14,7 @@ spark.table("biobridge_bronze.meteo")
     translate($"Zonneschijn", ",", ".").cast("Double").as("Zonneschijn"),
     to_date($"Datum-tijd").as("datum")
   )
+  .where($"datum" >= "2020-05-01")
   .write
   .mode("overwrite")
   .partitionBy("datum")
