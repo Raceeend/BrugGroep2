@@ -3,8 +3,8 @@ import org.apache.spark.sql.functions.{to_date, to_timestamp, translate}
 
 spark.table("biobridge_bronze.strain")
   .select(
-    to_timestamp($"Datum-tijd").as("Datum-tijd"),
-    $"Sensor_naam",
+    to_timestamp($"Datum-tijd").as("Datum_tijd"),
+    translate($"Sensor_naam", " ", "").as("Sensor_naam"),
     translate($"Waarde", ",", ".").cast("Double").as("Waarde"),
     $"Unit",
     $"Brugdeel",
